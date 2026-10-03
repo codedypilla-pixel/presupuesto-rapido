@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Presupuesto Rápido — generador de presupuestos en PDF gratis y sin registro</title>
+<meta name="description" content="Crea presupuestos profesionales en PDF en un minuto. Gratis, sin registro y sin subir tus datos: todo se queda en tu navegador. Para autónomos y pequeños negocios.">
+<meta property="og:title" content="Presupuesto Rápido — presupuestos en PDF gratis y sin registro">
+<meta property="og:description" content="Rellena, pulsa imprimir y tienes tu presupuesto en PDF. Tus datos no salen de tu navegador.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f6f5c'/%3E%3Cpath d='M9 8h14v3H9zm0 6.5h14v3H9zM9 21h8v3H9z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{--ink:#1c2321;--muted:#66706c;--line:#dfe4e1;--bg:#f3f5f4;--card:#fff;--accent:#1f6f5c;--accent-ink:#fff;--warn:#a4452c}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+.top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;background:var(--card);border-bottom:1px solid var(--line)}
+.top h1{font-size:18px;margin:0;margin-right:auto}
+.top h1 small{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+.btn{border:1px solid var(--line);background:var(--card);padding:8px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.danger{color:var(--warn)}
+.wrap{display:grid;grid-template-columns:minmax(320px,440px) 1fr;gap:16px;padding:16px;max-width:1400px;margin:0 auto}
+.editor{display:flex;flex-direction:column;gap:12px}
+fieldset{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:12px;margin:0;min-width:0}
+legend{font-weight:600;padding:0 6px}
+label{display:block;font-size:12px;color:var(--muted);margin-top:8px}
+input,select,textarea{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:#fff}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+textarea{resize:vertical;min-height:56px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.item{display:grid;grid-template-columns:1fr 62px 84px 30px;gap:6px;margin-top:6px}
+.item button{border:0;background:none;color:var(--warn);cursor:pointer;font-size:18px;padding:0}
+.itemhead{font-size:12px;color:var(--muted)}
+.logo-row{display:flex;gap:8px;align-items:center;margin-top:4px}
+.logo-row img{max-height:36px;max-width:90px}
+.hint{font-size:12px;color:var(--muted);margin:6px 0 0}
+.tip{border:1px solid var(--accent);border-radius:10px;background:#eaf4f1;padding:12px}
+.tip p{margin:0 0 8px}
+.tip a{display:inline-block;margin:0 6px 0 0;padding:6px 12px;border-radius:999px;background:var(--accent);color:#fff;text-decoration:none;font-weight:600}
+.preview{overflow:auto}
+.sheet{background:#fff;width:210mm;min-height:297mm;max-width:100%;margin:0 auto;padding:16mm;box-shadow:0 2px 14px rgba(0,0,0,.12);font-size:13px}
+.s-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.s-head img{max-height:70px;max-width:190px}
+.s-title{text-align:right}
+.s-title h2{margin:0;font-size:26px;letter-spacing:.04em;color:var(--accent)}
+.s-title div{color:var(--muted)}
+.s-parties{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:22px 0}
+.s-parties h3{margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.s-parties p{margin:0;white-space:pre-line}
+.s-parties strong{font-size:15px}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:left;border-bottom:2px solid var(--ink);padding:6px 4px}
+td{padding:7px 4px;border-bottom:1px solid var(--line);vertical-align:top;white-space:pre-line}
+th.n,td.n{text-align:right;white-space:nowrap}
+.s-totals{margin:14px 0 0 auto;width:260px}
+.s-totals div{display:flex;justify-content:space-between;padding:3px 4px}
+.s-totals .grand{border-top:2px solid var(--ink);margin-top:4px;padding-top:7px;font-size:17px;font-weight:700}
+.s-notes{margin-top:26px;white-space:pre-line;color:#3b4541}
+.s-notes h3{margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+footer{padding:8px 16px 28px;text-align:center;color:var(--muted);font-size:12px}
+footer a{color:inherit}
+@media (max-width:900px){.wrap{grid-template-columns:1fr}.sheet{padding:8mm;min-height:0}}
+@page{size:A4;margin:14mm}
+@media print{
+  body{background:#fff}
+  .top,.editor,footer{display:none}
+  .wrap{display:block;padding:0}
+  .sheet{box-shadow:none;width:auto;min-height:0;padding:0}
+  tr{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Presupuesto Rápido <small data-i18n="tagline"></small></h1>
+  <select id="lang" style="width:auto" aria-label="Idioma / Language">
+    <option value="es">Español</option>
+    <option value="en">English</option>
+  </select>
+  <button class="btn" id="export" data-i18n="export"></button>
+  <button class="btn" id="import" data-i18n="import"></button>
+  <button class="btn danger" id="reset" data-i18n="reset"></button>
+  <button class="btn primary" id="print" data-i18n="print"></button>
+  <input type="file" id="importFile" accept="application/json" hidden>
+</header>
+
+<main class="wrap">
+  <section class="editor">
+    <fieldset>
+      <legend data-i18n="yourData"></legend>
+      <label><span data-i18n="name"></span><input data-k="biz.name" autocomplete="organization"></label>
+      <div class="row">
+        <label><span data-i18n="taxId"></span><input data-k="biz.id"></label>
+        <label><span data-i18n="contact"></span><input data-k="biz.contact"></label>
+      </div>
+      <label><span data-i18n="address"></span><textarea data-k="biz.addr" rows="2"></textarea></label>
+      <label data-i18n="logo"></label>
+      <div class="logo-row">
+        <img id="logoThumb" alt="" hidden>
+        <button class="btn" id="logoPick" data-i18n="logoPick"></button>
+        <button class="btn danger" id="logoDel" data-i18n="logoDel" hidden></button>
+        <input type="file" id="logoFile" accept="image/*" hidden>
+      </div>
+      <p class="hint" id="logoErr" hidden></p>
+    </fieldset>
+
+    <fieldset>
+      <legend data-i18n="client"></legend>
+      <label><span data-i18n="name"></span><input data-k="cli.name"></label>
+      <label><span data-i18n="taxId"></span><input data-k="cli.id"></label>
+      <label><span data-i18n="address"></span><textarea data-k="cli.addr" rows="2"></textarea></label>
+    </fieldset>
+
+    <fieldset>
+      <legend data-i18n="quote"></legend>
+      <div class="row3">
+        <label><span data-i18n="number"></span><input data-k="num"></label>
+        <label><span data-i18n="date"></span><input type="date" data-k="date"></label>
+        <label><span data-i18n="validDays"></span><input type="number" min="0" step="1" data-k="valid"></label>
+      </div>
+      <div class="item itemhead" style="margin-top:12px">
+        <span data-i18n="desc"></span><span data-i18n="qty"></span><span data-i18n="price"></span><span></span>
+      </div>
+      <div id="items"></div>
+      <button class="btn" id="addItem" style="margin-top:8px" data-i18n="addItem"></button>
+      <div class="row3">
+        <label><span data-i18n="discount"></span><input type="number" min="0" max="100" step="0.01" data-k="disc"></label>
+        <label><span data-i18n="tax"></span><input type="number" min="0" max="100" step="0.01" data-k="tax"></label>
+        <label><span data-i18n="currency"></span>
+          <select data-k="cur"><option>EUR</option><option>USD</option><option>GBP</option><option>MXN</option><option>ARS</option><option>COP</option><option>CLP</option><option>PEN</option></select>
+        </label>
+      </div>
+      <label><span data-i18n="notes"></span><textarea data-k="notes" rows="3"></textarea></label>
+    </fieldset>
+
+    <div class="tip">
+      <p data-i18n="tipText"></p>
+      <a href="https://paypal.me/codedypilla/2EUR" target="_blank" rel="noopener">2 €</a>
+      <a href="https://paypal.me/codedypilla/5EUR" target="_blank" rel="noopener">5 €</a>
+      <a href="https://paypal.me/codedypilla/10EUR" target="_blank" rel="noopener">10 €</a>
+    </div>
+    <p class="hint" data-i18n="privacy"></p>
+  </section>
+
+  <section class="preview"><div class="sheet" id="sheet"></div></section>
+</main>
+
+<footer>
+  <span data-i18n="footer"></span> ·
+  <a href="https://github.com/codedypilla-pixel/presupuesto-rapido" target="_blank" rel="noopener">GitHub</a>
+</footer>
+
+<script>
+const T = {
+  es: {
+    tagline: 'Presupuestos en PDF, gratis y sin registro',
+    export: 'Guardar copia', import: 'Abrir copia', reset: 'Nuevo', resetSure: '¿Borrar todo?', print: 'Imprimir / PDF',
+    yourData: 'Tus datos', client: 'Cliente', quote: 'Presupuesto',
+    name: 'Nombre o razón social', taxId: 'NIF / CIF', contact: 'Teléfono o email', address: 'Dirección',
+    logo: 'Logo (opcional)', logoPick: 'Elegir imagen', logoDel: 'Quitar', logoBig: 'La imagen pesa demasiado. Usa una de menos de 300 KB.',
+    number: 'Número', date: 'Fecha', validDays: 'Validez (días)',
+    desc: 'Concepto', qty: 'Cant.', price: 'Precio', addItem: '+ Añadir línea',
+    discount: 'Descuento %', tax: 'IVA %', currency: 'Moneda', notes: 'Notas y condiciones',
+    tipText: '¿Te ha ahorrado tiempo? Esta herramienta es gratis y sin anuncios. Si quieres, invítame a un café:',
+    privacy: 'Tus datos se guardan solo en este navegador. No se envían a ningún servidor.',
+    footer: 'Código abierto (MIT). Hecho con Claude Code.',
+    docTitle: 'PRESUPUESTO', numShort: 'N.º', dateShort: 'Fecha', validUntil: 'Válido hasta',
+    from: 'De', to: 'Para', amount: 'Importe', unit: 'Precio ud.',
+    subtotal: 'Subtotal', discountLine: 'Descuento', base: 'Base imponible', taxLine: 'IVA', total: 'TOTAL',
+    notesTitle: 'Notas y condiciones', emptyName: 'Tu nombre o empresa', emptyClient: 'Nombre del cliente', file: 'presupuesto'
+  },
+  en: {
+    tagline: 'PDF quotes, free and with no sign-up',
+    export: 'Save copy', import: 'Open copy', reset: 'New', resetSure: 'Clear everything?', print: 'Print / PDF',
+    yourData: 'Your details', client: 'Client', quote: 'Quote',
+    name: 'Name or company', taxId: 'Tax ID / VAT no.', contact: 'Phone or email', address: 'Address',
+    logo: 'Logo (optional)', logoPick: 'Choose image', logoDel: 'Remove', logoBig: 'That image is too large. Use one under 300 KB.',
+    number: 'Number', date: 'Date', validDays: 'Valid for (days)',
+    desc: 'Description', qty: 'Qty', price: 'Price', addItem: '+ Add line',
+    discount: 'Discount %', tax: 'Tax %', currency: 'Currency', notes: 'Notes and terms',
+    tipText: 'Did this save you time? This tool is free and has no ads. If you like, buy me a coffee:',
+    privacy: 'Your data is stored only in this browser. Nothing is sent to any server.',
+    footer: 'Open source (MIT). Built with Claude Code.',
+    docTitle: 'QUOTE', numShort: 'No.', dateShort: 'Date', validUntil: 'Valid until',
+    from: 'From', to: 'To', amount: 'Amount', unit: 'Unit price',
+    subtotal: 'Subtotal', discountLine: 'Discount', base: 'Net amount', taxLine: 'Tax', total: 'TOTAL',
+    notesTitle: 'Notes and terms', emptyName: 'Your name or company', emptyClient: 'Client name', file: 'quote'
+  }
+};
+
+const KEY = 'presupuesto-rapido:v1';
+const MAX_LOGO = 300 * 1024;
+const $ = (s) => document.querySelector(s);
+const today = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+const blank = () => ({
+  lang: (navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en',
+  cur: 'EUR', biz: { name: '', id: '', contact: '', addr: '', logo: '' }, cli: { name: '', id: '', addr: '' },
+  num: '', date: today(), valid: 30, items: [{ d: '', q: 1, p: 0 }], tax: 21, disc: 0, notes: ''
+});
+
+// Merge saved data over the defaults so a partial or older copy never breaks rendering.
+function normalise(raw) {
+  const b = blank();
+  if (!raw || typeof raw !== 'object') return b;
+  const s = { ...b, ...raw, biz: { ...b.biz, ...raw.biz }, cli: { ...b.cli, ...raw.cli } };
+  if (!T[s.lang]) s.lang = b.lang;
+  s.items = Array.isArray(raw.items) && raw.items.length
+    ? raw.items.map((i) => ({ d: String(i?.d ?? ''), q: i?.q ?? 1, p: i?.p ?? 0 }))
+    : b.items;
+  if (typeof s.biz.logo !== 'string' || !s.biz.logo.startsWith('data:image/')) s.biz.logo = '';
+  return s;
+}
+
+let state;
+try { state = normalise(JSON.parse(localStorage.getItem(KEY))); } catch { state = blank(); }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
+
+const t = (k) => T[state.lang][k];
+const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const num = (v) => { const n = parseFloat(String(v).replace(',', '.')); return Number.isFinite(n) ? n : 0; };
+const r2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
+const locale = () => (state.lang === 'es' ? 'es-ES' : 'en-GB');
+const money = (n) => new Intl.NumberFormat(locale(), { style: 'currency', currency: state.cur }).format(n);
+const qtyFmt = (n) => new Intl.NumberFormat(locale(), { maximumFractionDigits: 3 }).format(n);
+const dateFmt = (iso) => {
+  const d = new Date(iso + 'T12:00:00');
+  return isNaN(d) ? '' : new Intl.DateTimeFormat(locale(), { dateStyle: 'long' }).format(d);
+};
+
+function totals() {
+  const lines = state.items.map((i) => r2(num(i.q) * num(i.p)));
+  const subtotal = r2(lines.reduce((a, b) => a + b, 0));
+  const discount = r2(subtotal * Math.min(Math.max(num(state.disc), 0), 100) / 100);
+  const base = r2(subtotal - discount);
+  const tax = r2(base * Math.max(num(state.tax), 0) / 100);
+  return { lines, subtotal, discount, base, tax, total: r2(base + tax) };
+}
+
+function renderSheet() {
+  const c = totals();
+  let until = '';
+  if (state.date && num(state.valid) > 0) {
+    const d = new Date(state.date + 'T12:00:00');
+    if (!isNaN(d)) { d.setDate(d.getDate() + Math.round(num(state.valid))); until = new Intl.DateTimeFormat(locale(), { dateStyle: 'long' }).format(d); }
+  }
+  const rows = state.items
+    .map((i, n) => ({ i, amount: c.lines[n] }))
+    .filter(({ i }) => i.d.trim() || num(i.p))
+    .map(({ i, amount }) => `<tr><td>${esc(i.d)}</td><td class="n">${qtyFmt(num(i.q))}</td><td class="n">${money(num(i.p))}</td><td class="n">${money(amount)}</td></tr>`)
+    .join('');
+  const party = (p, empty, contact) => `<p><strong>${esc(p.name) || `<span style="color:#a9b1ad">${esc(empty)}</span>`}</strong>
+${[p.id, p.addr, contact].filter((x) => x && x.trim()).map(esc).join('\n')}</p>`;
+
+  $('#sheet').innerHTML = `
+    <div class="s-head">
+      <div>${state.biz.logo ? `<img src="${esc(state.biz.logo)}" alt="">` : ''}</div>
+      <div class="s-title">
+        <h2>${t('docTitle')}</h2>
+        ${state.num.trim() ? `<div>${t('numShort')} ${esc(state.num)}</div>` : ''}
+        ${state.date ? `<div>${t('dateShort')}: ${esc(dateFmt(state.date))}</div>` : ''}
+        ${until ? `<div>${t('validUntil')}: ${esc(until)}</div>` : ''}
+      </div>
+    </div>
+    <div class="s-parties">
+      <div><h3>${t('from')}</h3>${party(state.biz, t('emptyName'), state.biz.contact)}</div>
+      <div><h3>${t('to')}</h3>${party(state.cli, t('emptyClient'))}</div>
+    </div>
+    <table>
+      <thead><tr><th>${t('desc')}</th><th class="n">${t('qty')}</th><th class="n">${t('unit')}</th><th class="n">${t('amount')}</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="s-totals">
+      ${c.discount ? `<div><span>${t('subtotal')}</span><span>${money(c.subtotal)}</span></div>
+      <div><span>${t('discountLine')} (${qtyFmt(num(state.disc))} %)</span><span>−${money(c.discount)}</span></div>` : ''}
+      <div><span>${t('base')}</span><span>${money(c.base)}</span></div>
+      <div><span>${t('taxLine')} (${qtyFmt(num(state.tax))} %)</span><span>${money(c.tax)}</span></div>
+      <div class="grand"><span>${t('total')}</span><span>${money(c.total)}</span></div>
+    </div>
+    ${state.notes.trim() ? `<div class="s-notes"><h3>${t('notesTitle')}</h3>${esc(state.notes)}</div>` : ''}`;
+}
+
+function renderItems() {
+  $('#items').innerHTML = state.items.map((i, n) => `
+    <div class="item">
+      <input data-i="${n}" data-f="d" value="${esc(i.d)}" aria-label="${esc(t('desc'))}">
+      <input data-i="${n}" data-f="q" type="number" min="0" step="any" value="${esc(i.q)}" aria-label="${esc(t('qty'))}">
+      <input data-i="${n}" data-f="p" type="number" min="0" step="any" value="${esc(i.p)}" aria-label="${esc(t('price'))}">
+      <button data-del="${n}" title="×" aria-label="×" ${state.items.length < 2 ? 'hidden' : ''}>×</button>
+    </div>`).join('');
+}
+
+function renderLogo() {
+  const has = !!state.biz.logo;
+  $('#logoThumb').hidden = !has;
+  $('#logoDel').hidden = !has;
+  if (has) $('#logoThumb').src = state.biz.logo;
+}
+
+const getPath = (p) => p.split('.').reduce((o, k) => o[k], state);
+function setPath(p, v) { const ks = p.split('.'); const last = ks.pop(); ks.reduce((o, k) => o[k], state)[last] = v; }
+
+function renderAll() {
+  document.documentElement.lang = state.lang;
+  $('#lang').value = state.lang;
+  document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-k]').forEach((el) => { el.value = getPath(el.dataset.k); });
+  renderItems(); renderLogo(); renderSheet();
+}
+
+document.addEventListener('input', (e) => {
+  const el = e.target;
+  if (el.dataset.k) setPath(el.dataset.k, el.value);
+  else if (el.dataset.i) state.items[+el.dataset.i][el.dataset.f] = el.value;
+  else return;
+  save(); renderSheet();
+});
+
+$('#items').addEventListener('click', (e) => {
+  const n = e.target.dataset.del;
+  if (n === undefined) return;
+  state.items.splice(+n, 1); save(); renderItems(); renderSheet();
+});
+$('#addItem').addEventListener('click', () => {
+  state.items.push({ d: '', q: 1, p: 0 }); save(); renderItems(); renderSheet();
+  $('#items').lastElementChild.querySelector('input').focus();
+});
+$('#lang').addEventListener('change', (e) => { state.lang = e.target.value; save(); renderAll(); });
+
+$('#print').addEventListener('click', () => {
+  const old = document.title;
+  document.title = [t('file'), state.num.trim(), state.cli.name.trim()].filter(Boolean).join('-').replace(/[\\/:*?"<>|]+/g, '_');
+  window.print();
+  document.title = old;
+});
+
+// Two-step confirmation instead of a blocking dialog.
+let armed = null;
+$('#reset').addEventListener('click', (e) => {
+  if (!armed) {
+    e.target.textContent = t('resetSure');
+    armed = setTimeout(() => { armed = null; e.target.textContent = t('reset'); }, 3000);
+    return;
+  }
+  clearTimeout(armed); armed = null;
+  const keep = { lang: state.lang, cur: state.cur, biz: state.biz, tax: state.tax };
+  state = { ...blank(), ...keep }; save(); renderAll();
+});
+
+$('#export').addEventListener('click', () => {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }));
+  a.download = `${t('file')}${state.num.trim() ? '-' + state.num.trim().replace(/[\\/:*?"<>|]+/g, '_') : ''}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+$('#import').addEventListener('click', () => $('#importFile').click());
+$('#importFile').addEventListener('change', async (e) => {
+  const f = e.target.files[0];
+  e.target.value = '';
+  if (!f) return;
+  try { state = normalise(JSON.parse(await f.text())); save(); renderAll(); } catch {}
+});
+
+$('#logoPick').addEventListener('click', () => $('#logoFile').click());
+$('#logoFile').addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  e.target.value = '';
+  if (!f) return;
+  const err = $('#logoErr');
+  if (f.size > MAX_LOGO) { err.textContent = t('logoBig'); err.hidden = false; return; }
+  err.hidden = true;
+  const r = new FileReader();
+  r.onload = () => { state.biz.logo = r.result; save(); renderLogo(); renderSheet(); };
+  r.readAsDataURL(f);
+});
+$('#logoDel').addEventListener('click', () => { state.biz.logo = ''; save(); renderLogo(); renderSheet(); });
+
+renderAll();
+</script>
+</body>
+</html>
